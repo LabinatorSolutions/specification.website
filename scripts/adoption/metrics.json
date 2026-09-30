@@ -1,0 +1,257 @@
+{
+  "$comment": "Maps spec slugs to conservative HTTP Archive adoption signals. Conditions default to all; nested groups can combine any. Uncollected topics are omitted, not reported as zero. See README.md for measurement limits.",
+  "metrics": [
+    {
+      "conditions": [
+        {
+          "jsonPath": "$.\"/.well-known/gpc.json\".found",
+          "op": "eq",
+          "value": "true",
+          "field": "well_known"
+        },
+        {
+          "field": "well_known",
+          "jsonPath": "$.\"/.well-known/gpc.json\".data.gpc",
+          "op": "exists"
+        }
+      ],
+      "label": "gpc.json with a boolean declaration",
+      "slug": "gpc-json"
+    },
+    {
+      "conditions": [
+        {
+          "jsonPath": "$.\"/.well-known/security.txt\".found",
+          "op": "eq",
+          "value": "true",
+          "field": "well_known"
+        },
+        {
+          "field": "well_known",
+          "jsonPath": "$.\"/.well-known/security.txt\".data.valid",
+          "op": "eq",
+          "value": "true"
+        }
+      ],
+      "label": "security.txt passing the collector’s field checks",
+      "slug": "security-txt"
+    },
+    {
+      "conditions": [
+        {
+          "jsonPath": "$.\"/.well-known/assetlinks.json\".found",
+          "op": "eq",
+          "value": "true",
+          "field": "well_known"
+        },
+        {
+          "combine": "any",
+          "conditions": [
+            {
+              "field": "well_known",
+              "jsonPath": "$.\"/.well-known/assetlinks.json\".data.deep_linking",
+              "op": "eq",
+              "value": "true"
+            },
+            {
+              "field": "well_known",
+              "jsonPath": "$.\"/.well-known/assetlinks.json\".data.credential_sharing",
+              "op": "eq",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "label": "/.well-known/assetlinks.json",
+      "slug": "assetlinks-json"
+    },
+    {
+      "conditions": [
+        {
+          "jsonPath": "$.\"/.well-known/apple-app-site-association\".found",
+          "op": "eq",
+          "value": "true",
+          "field": "well_known"
+        },
+        {
+          "combine": "any",
+          "conditions": [
+            {
+              "field": "well_known",
+              "jsonPath": "$.\"/.well-known/apple-app-site-association\".data.app_links",
+              "op": "eq",
+              "value": "true"
+            },
+            {
+              "field": "well_known",
+              "jsonPath": "$.\"/.well-known/apple-app-site-association\".data.web_credentials",
+              "op": "eq",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "label": "/.well-known/apple-app-site-association",
+      "slug": "apple-app-site-association"
+    },
+    {
+      "conditions": [
+        {
+          "jsonPath": "$.\"/.well-known/change-password\".found",
+          "op": "eq",
+          "value": "true",
+          "field": "well_known"
+        },
+        {
+          "field": "well_known",
+          "jsonPath": "$.\"/.well-known/change-password\".data.redirected",
+          "op": "eq",
+          "value": "true"
+        },
+        {
+          "field": "well_known",
+          "jsonPath": "$.\"/.well-known/resource-that-should-not-exist-whose-status-code-should-not-be-200/\".data.status",
+          "op": "eq",
+          "value": "404"
+        }
+      ],
+      "label": "change-password redirect with a successful missing-URL check",
+      "slug": "change-password"
+    },
+    {
+      "conditions": [
+        {
+          "jsonPath": "$.\"/.well-known/webauthn\".found",
+          "op": "eq",
+          "value": "true",
+          "field": "well_known"
+        },
+        {
+          "field": "well_known",
+          "jsonPath": "$.\"/.well-known/webauthn\".data.origins",
+          "op": "nonempty-array"
+        }
+      ],
+      "label": "webauthn with a non-empty origins array",
+      "slug": "webauthn"
+    },
+    {
+      "conditions": [
+        {
+          "combine": "all",
+          "conditions": [
+            {
+              "field": "well_known",
+              "jsonPath": "$.\"/.well-known/ai-catalog.json\".found",
+              "op": "eq",
+              "value": "true"
+            },
+            {
+              "field": "well_known",
+              "jsonPath": "$.\"/.well-known/ai-catalog.json\".data.entries_count",
+              "op": "positive"
+            }
+          ]
+        },
+        {
+          "combine": "all",
+          "conditions": [
+            {
+              "field": "well_known",
+              "jsonPath": "$.\"/.well-known/ard.json\".found",
+              "op": "eq",
+              "value": "true"
+            },
+            {
+              "field": "well_known",
+              "jsonPath": "$.\"/.well-known/ard.json\".data.entries_count",
+              "op": "positive"
+            }
+          ]
+        }
+      ],
+      "label": "AI Catalog or ARD manifest with at least one entry",
+      "slug": "agentic-resource-discovery",
+      "combine": "any"
+    },
+    {
+      "conditions": [
+        {
+          "jsonPath": "$.status",
+          "op": "eq",
+          "value": "200",
+          "field": "robots_txt"
+        },
+        {
+          "combine": "any",
+          "conditions": [
+            {
+              "field": "robots_txt",
+              "jsonPath": "$.record_counts.by_type.user_agent",
+              "op": "positive"
+            },
+            {
+              "field": "robots_txt",
+              "jsonPath": "$.record_counts.by_type.sitemap",
+              "op": "positive"
+            }
+          ]
+        }
+      ],
+      "label": "robots.txt with parsed user-agent or sitemap directives",
+      "slug": "robots-txt"
+    },
+    {
+      "conditions": [
+        {
+          "field": "robots_txt",
+          "jsonPath": "$.status",
+          "op": "eq",
+          "value": "200"
+        },
+        {
+          "combine": "any",
+          "conditions": [
+            {
+              "jsonPath": "$.record_counts.by_useragent.\"gptbot\"",
+              "op": "exists",
+              "field": "robots_txt"
+            },
+            {
+              "jsonPath": "$.record_counts.by_useragent.\"claudebot\"",
+              "op": "exists",
+              "field": "robots_txt"
+            },
+            {
+              "jsonPath": "$.record_counts.by_useragent.\"ccbot\"",
+              "op": "exists",
+              "field": "robots_txt"
+            },
+            {
+              "jsonPath": "$.record_counts.by_useragent.\"anthropic-ai\"",
+              "op": "exists",
+              "field": "robots_txt"
+            },
+            {
+              "jsonPath": "$.record_counts.by_useragent.\"google-extended\"",
+              "op": "exists",
+              "field": "robots_txt"
+            },
+            {
+              "jsonPath": "$.record_counts.by_useragent.\"perplexitybot\"",
+              "op": "exists",
+              "field": "robots_txt"
+            },
+            {
+              "jsonPath": "$.record_counts.by_useragent.\"bytespider\"",
+              "op": "exists",
+              "field": "robots_txt"
+            }
+          ]
+        }
+      ],
+      "label": "robots.txt rules naming AI crawlers",
+      "slug": "robots-for-ai-crawlers"
+    }
+  ]
+}

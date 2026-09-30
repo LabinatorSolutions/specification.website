@@ -30,7 +30,9 @@
     "assets": "node scripts/generate-assets.mjs",
     "test:websub": "node --experimental-strip-types scripts/test-websub.mjs",
     "sign:skill": "node scripts/check-skill.mjs",
-    "check:skill": "node scripts/check-skill.mjs --check"
+    "check:skill": "node scripts/check-skill.mjs --check",
+    "adoption": "node scripts/adoption/fetch-adoption.mjs",
+    "test:adoption": "node --test scripts/adoption/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.2",
@@ -38,7 +40,8 @@
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
     "dompurify": "^3.4.16",
-    "tailwindcss": "^4.3.0"
+    "tailwindcss": "^4.3.0",
+    "@google-cloud/bigquery": "^8.0.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

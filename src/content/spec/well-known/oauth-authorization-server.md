@@ -6,7 +6,7 @@ summary: "A JSON metadata document describing a plain OAuth 2.0 authorisation se
 status: optional
 order: 31
 appliesTo: [all]
-relatedSlugs: [openid-configuration, oauth-protected-resource, well-known-overview]
+relatedSlugs: [openid-configuration, oauth-protected-resource, well-known-overview, auth-md]
 updated: "2026-07-08T00:00:00.000Z"
 sources:
   - title: "RFC 8414 — OAuth 2.0 Authorization Server Metadata"

@@ -35,10 +35,10 @@
     "test:adoption": "node --test scripts/adoption/*.test.mjs"
   },
   "dependencies": {
-    "@astrojs/mdx": "^8.0.2",
+    "@astrojs/mdx": "^8.0.3",
     "@astrojs/rss": "^4.0.19",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.5",
+    "astro": "^7.3.8",
     "dompurify": "^3.4.16",
     "tailwindcss": "^4.3.0",
     "@google-cloud/bigquery": "^8.0.0"

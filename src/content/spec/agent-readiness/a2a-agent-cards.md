@@ -7,7 +7,7 @@ status: optional
 order: 82
 appliesTo: [all]
 relatedSlugs: [agent-readiness-overview, mcp-and-tool-discovery, agent-skills-discovery, machine-readable-formats, link-headers, api-catalog, dns-aid, agentic-resource-discovery]
-updated: "2026-10-14T00:00:00.000Z"
+updated: "2026-10-15T00:00:00.000Z"
 sources:
   - title: "A2A Protocol — Specification"
     url: "https://a2a-protocol.org/latest/specification/"
@@ -51,7 +51,7 @@ Adoption is early but accelerating. The protocol reached version 1.0 in March 20
 - **Serve it at the canonical URI.** Per [RFC 8615](https://www.rfc-editor.org/rfc/rfc8615), publish at `/.well-known/agent-card.json` with `Content-Type: application/json` and a sensible `Cache-Control` (an hour is fine; ETag is better).
 - **Advertise it.** Add a `Link: </.well-known/agent-card.json>; rel="service-desc"; type="application/json"` response header so clients can discover the card without guessing the path. Add the same link to your [`/.well-known/api-catalog`](/spec/well-known/api-catalog/) Linkset entry. See [HTTP Link headers](/spec/agent-readiness/link-headers/).
 - **Ship the endpoint behind it.** Do not publish a card that points at a non-existent URL. The first call most validators make is to the endpoint; a 404 there is worse than no card at all. At minimum, implement the `SendMessage` JSON-RPC method and return method-not-found for the rest.
-- **Use the 1.0 method names.** Version 1.0 renamed every JSON-RPC method from the 0.3 slash style to PascalCase: `message/send` became `SendMessage`, `message/stream` became `SendStreamingMessage`, `tasks/get` became `GetTask`. If you already serve 0.3 clients, keep them working with a second `supportedInterfaces` entry declaring `protocolVersion` `0.3`, or accept the old names as aliases during the transition, but make sure an interface that declares `1.0` answers the 1.0 names.
+- **Migrate the whole wire format.** Version 1.0 renamed JSON-RPC methods: `message/send` became `SendMessage`, `message/stream` became `SendStreamingMessage`, and `tasks/get` became `GetTask`. It also changed payloads: message roles use `ROLE_USER` and `ROLE_AGENT`, and parts are identified by their fields instead of a `kind` discriminator. Follow the [1.0 migration guide](https://a2a-protocol.org/latest/whats-new-v1/) for the request, response and agent-card changes. Method aliases alone do not preserve 0.3 compatibility. If you retain 0.3 clients, serve discovery cards and wire formats those clients understand, using a separate endpoint or a version-aware compatibility layer that parses and emits the appropriate format; advertise only versions each interface actually implements.
 - **Be honest about capabilities.** If you do not support streaming, set `capabilities.streaming` to `false`. The same goes for `pushNotifications` and `extendedAgentCard`. Lying here breaks clients that probe before they call.
 - **Sign the card if you care about provenance.** A2A allows JWS signatures (`signatures[]`); useful in curated registries, optional for direct discovery.
 

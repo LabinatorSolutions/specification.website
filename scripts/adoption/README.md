@@ -49,7 +49,10 @@ expected scan size; future monthly scans may differ.
   credentials are needed; `ADOPTION_CRAWL` defaults to the current UTC month.
 - Override the execution cap with `ADOPTION_MAX_BYTES_BILLED` (a positive number
   of bytes; default `120259084288`).
-- The workflow can also be triggered by hand via workflow_dispatch.
+- The workflow can also be triggered by hand via workflow_dispatch. Select
+  `dry_run` to validate the configured Google Cloud identity and estimate query
+  cost without executing the aggregation, formatting data or opening a PR.
+  Scheduled runs and manual runs without this option still refresh the data.
 
 The query reads `httparchive.crawl.pages`, restricted to one date, desktop
 clients, root pages, and `rank <= 1000000`. It counts distinct `root_page` values,

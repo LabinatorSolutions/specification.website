@@ -32,22 +32,25 @@
     "sign:skill": "node scripts/check-skill.mjs",
     "check:skill": "node scripts/check-skill.mjs --check",
     "adoption": "node scripts/adoption/fetch-adoption.mjs",
-    "test:adoption": "node --test scripts/adoption/*.test.mjs"
+    "test:adoption": "node --test scripts/adoption/*.test.mjs",
+    "test:diagnostics": "node scripts/test-diagnostics.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.3",
     "@astrojs/rss": "^4.0.19",
+    "@google-cloud/bigquery": "^9.2.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
     "dompurify": "^3.4.16",
-    "tailwindcss": "^4.3.0",
-    "@google-cloud/bigquery": "^9.2.0"
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@cloudflare/workers-types": "^5.20261009.1",
     "@eslint/js": "^10.0.1",
+    "@sentry/browser": "^11.8.0",
     "@types/node": "^26.6.4",
+    "esbuild": "^0.28.2",
     "eslint": "^10.12.0",
     "eslint-plugin-astro": "^3.2.1",
     "globals": "^17.13.0",
@@ -60,6 +63,6 @@
     "typescript-eslint": "^8.71.1"
   },
   "overrides": {
-    "esbuild": "^0.28.1"
+    "esbuild": "$esbuild"
   }
 }

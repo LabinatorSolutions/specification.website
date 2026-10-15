@@ -640,4 +640,23 @@ const dompurifySrc = join(
 await writeFile(join(vendorOut, "purify.min.js"), await readFile(dompurifySrc));
 console.log("  vendored DOMPurify → /vendor/purify.min.js");
 
+// Browser telemetry: @sentry/browser plus our config/scrubber
+// (src/diagnostics/client.ts), bundled into one self-hosted file so it stays
+// script-src 'self' and can carry an SRI hash like every other script. Output
+// is deterministic, so an unchanged source leaves the committed file untouched.
+const { build: esbuild } = await import("esbuild");
+await esbuild({
+  entryPoints: [join(root, "src", "diagnostics", "client.ts")],
+  outfile: join(vendorOut, "diagnostics.js"),
+  bundle: true,
+  minify: true,
+  format: "iife",
+  target: "es2020",
+  legalComments: "eof",
+  // Strip the SDK's debug logger (Sentry's documented tree-shaking flag).
+  define: { __SENTRY_DEBUG__: "false" },
+  logLevel: "warning",
+});
+console.log("  bundled Sentry browser SDK → /vendor/diagnostics.js");
+
 console.log("Done.");

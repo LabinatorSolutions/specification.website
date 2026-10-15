@@ -117,6 +117,18 @@ const webmcpSri = await webmcpIntegrity();
       ogImage={ogImage}
     />
     {
+      /* GlitchTip error + performance telemetry (src/diagnostics/client.ts),
+        self-hosted and posting only to the same-origin /api/diagnostics tunnel. */
+      import.meta.env.PROD && site.diagnostics.enabled && (
+        <script
+          defer
+          src="/vendor/diagnostics.js"
+          integrity={sri("/vendor/diagnostics.js")}
+          crossorigin="anonymous"
+        />
+      )
+    }
+    {
       import.meta.env.PROD && (
         <script
           defer

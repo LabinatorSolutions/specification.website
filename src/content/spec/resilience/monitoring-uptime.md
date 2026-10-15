@@ -6,8 +6,8 @@ summary: "Monitor the site from outside your own infrastructure, combine synthet
 status: recommended
 order: 50
 appliesTo: [all]
-relatedSlugs: [error-pages, maintenance-pages]
-updated: "2026-05-29T09:13:20.000Z"
+relatedSlugs: [error-pages, maintenance-pages, third-party-scripts]
+updated: "2026-10-15T12:00:00.000Z"
 sources:
   - title: "Google SRE Book — Monitoring Distributed Systems"
     url: "https://sre.google/sre-book/monitoring-distributed-systems/"
@@ -48,6 +48,10 @@ For synthetic monitoring, pick one external service and run checks every minute 
 Check more than the homepage. A login flow, a search endpoint, and a checkout step catch problems the home page does not. Validate the response body, not just the status code, so a `200 OK` returning the maintenance page still trips an alert.
 
 For RUM, send Core Web Vitals (LCP, INP, CLS) and JavaScript errors to a collector. The `web-vitals` library, Sentry, Datadog RUM, and Cloudflare Web Analytics all do this in a few kilobytes.
+
+A RUM script is still a script sending visitor data to someone, so it falls under the same rules as any [third-party script](/spec/privacy/third-party-scripts/). Two habits keep it honest. Scrub before sending: drop cookies, request headers and bodies, query strings and user identifiers in the client, so personal data never leaves the browser. And post to a same-origin endpoint that forwards to the collector, rather than to the collector's domain: `connect-src` stays `'self'`, the vendor never sees the visitor's IP address, and the forwarder can enforce its own limits. A forwarder is an open relay unless you make it otherwise: pin a single destination, check the `Origin`, cap the body size and the request rate, and accept only the event types you expect.
+
+This site ships it: JavaScript errors, and one in a thousand page loads for performance, go to a self-hosted GlitchTip server through a same-origin Sentry tunnel ([`functions/api/diagnostics.ts`](https://github.com/jdevalk/specification.website/blob/main/functions/api/diagnostics.ts)) that accepts one scrubbed error or transaction per request and nothing else.
 
 Run the status page on a different host and a different DNS provider from the main site. Common pattern: `status.example.com` resolved through a CDN-fronted static site, with the status records stored at a third-party provider (Statuspage, Instatus, BetterStack, or a static site you update manually). The point is that when the primary site is unreachable, the status page must not be unreachable too.
 

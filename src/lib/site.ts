@@ -16,6 +16,12 @@ export const site = {
   twitter: "@jdevalk",
   plausibleDomain: "specification.website",
   plausibleHost: "https://plausible.io",
+  // Browser error + performance telemetry to GlitchTip via the same-origin
+  // /api/diagnostics tunnel. `false` drops the script from every page; the
+  // proxy has its own switch (DIAGNOSTICS_ENABLED, functions/api/diagnostics.ts).
+  diagnostics: {
+    enabled: true,
+  },
   mcp: {
     endpoint: "https://mcp.specification.website/mcp",
     landing: "https://mcp.specification.website/",

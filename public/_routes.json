@@ -5,6 +5,7 @@
     "/_astro/*",
     "/fonts/*",
     "/js/*",
+    "/vendor/*",
     "/pagefind/*",
     "/og-default.png",
     "/og/*",

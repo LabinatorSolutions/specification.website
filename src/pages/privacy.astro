@@ -2,7 +2,7 @@
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Breadcrumbs from "~/components/Breadcrumbs.astro";
 
-const updated = "2026-07-30";
+const updated = "2026-10-15";
 ---
 
 <BaseLayout
@@ -23,9 +23,9 @@ const updated = "2026-07-30";
       <p>
         This site is a static, publicly readable reference. There are no user
         accounts, no comments, no forms, and no transactions. We collect a small
-        amount of aggregate analytics — see below — and nothing else. This page
-        exists because the spec lists a privacy policy as{" "}
-        <strong>required</strong>, and because honest disclosure is the only
+        amount of aggregate analytics and error reports — see below — and
+        nothing else. This page exists because the spec lists a privacy policy
+        as <strong>required</strong>, and because honest disclosure is the only
         kind worth publishing.
       </p>
 
@@ -226,6 +226,41 @@ const updated = "2026-07-30";
         treat subscribing as sharing that URL with us. If you would rather not,
         poll the feed — it works exactly as well, just less promptly.
       </p>
+
+      <h2 id="error-monitoring">Error and performance monitoring</h2>
+      <p>
+        Pages load a small self-hosted script that reports JavaScript errors,
+        and a sample of one in a thousand page loads for performance timing, to
+        a{" "}
+        <a href="https://glitchtip.com/" rel="external">
+          GlitchTip
+        </a>{" "}
+        server we run ourselves. Reports are sent to{" "}
+        <code>/api/diagnostics</code> on this site, which forwards them; your
+        browser never contacts the error tracker directly, so it never sees your
+        IP address.
+      </p>
+      <ul>
+        <li>
+          <strong>What a report contains:</strong> the error message and stack
+          trace, or page timing measurements; the page path without its query
+          string; browser and operating-system name and version; and the
+          sequence of recent clicks and navigations on the page. Before a report
+          leaves your browser, and again on our server, we remove cookies,
+          request headers other than the browser User-Agent, request bodies,
+          query strings, URL fragments, any user details and anything that looks
+          like an e-mail address. No session or replay data is recorded.
+        </li>
+        <li>
+          <strong>Abuse limits:</strong> to rate-limit the forwarding endpoint
+          we store a keyed hash of your IP address combined with the current
+          minute, never the address itself, and delete it within a few minutes.
+        </li>
+        <li>
+          <strong>How long:</strong> reports are deleted from GlitchTip after 30
+          days. They are used only to find and fix bugs and slow pages.
+        </li>
+      </ul>
 
       <h2 id="content-hosting">GitHub</h2>
       <p>

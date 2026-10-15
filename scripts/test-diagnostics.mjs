@@ -143,6 +143,13 @@ check("accepts an error event and scrubs it", () => {
   assert.equal(payload.breadcrumbs[0].data.from, "/a");
   assert.equal(payload.breadcrumbs[0].data.to, "/b");
 });
+check("rebuilt header keeps the DSN intact", () => {
+  const r = validateEnvelope(enc.encode(errorEnvelope()));
+  assert.equal(JSON.parse(r.body.split("\n")[0]).dsn, DIAGNOSTICS_DSN);
+});
+check("DSN public key is one the Sentry SDK can parse (\\w+)", () => {
+  assert.match(DIAGNOSTICS_DSN, /^https:\/\/\w+@[\w.-]+\/\d+$/);
+});
 check("accepts an item with explicit length", () => {
   assert.equal(
     validateEnvelope(enc.encode(errorEnvelope("x", { withLength: true }))).ok,

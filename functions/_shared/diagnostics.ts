@@ -13,8 +13,8 @@ import { scrubTelemetry } from "./telemetry-scrub";
  * relay is that neither host nor project can be chosen by the request.
  */
 export const DIAGNOSTICS_DSN =
-  "https://770f3173-c601-4c8a-89c8-ece6b93ea21e@errors.rondo.club/8";
-export const DIAGNOSTICS_PUBLIC_KEY = "770f3173-c601-4c8a-89c8-ece6b93ea21e";
+  "https://770f3173c6014c8a89c8ece6b93ea21e@errors.rondo.club/8";
+export const DIAGNOSTICS_PUBLIC_KEY = "770f3173c6014c8a89c8ece6b93ea21e";
 export const DIAGNOSTICS_UPSTREAM = "https://errors.rondo.club/api/8/envelope/";
 export const DIAGNOSTICS_ORIGIN = "https://specification.website";
 
@@ -112,13 +112,18 @@ export function validateEnvelope(bytes: Uint8Array): EnvelopeResult {
     return { ok: false, reason: "payload type mismatch" };
   }
 
-  const cleanHeader: Record<string, unknown> = { dsn: DIAGNOSTICS_DSN };
+  const cleanHeader: Record<string, unknown> = {};
   for (const field of HEADER_FIELDS) {
     if (header[field] !== undefined) cleanHeader[field] = header[field];
   }
+  // The DSN goes on after scrubbing: `key@host` looks like an e-mail address.
+  const scrubbedHeader = {
+    ...scrubTelemetry(cleanHeader),
+    dsn: DIAGNOSTICS_DSN,
+  };
   const cleanPayload = JSON.stringify(scrubTelemetry(payload));
   const body =
-    JSON.stringify(scrubTelemetry(cleanHeader)) +
+    JSON.stringify(scrubbedHeader) +
     "\n" +
     JSON.stringify({ type, length: encoder.encode(cleanPayload).length }) +
     "\n" +

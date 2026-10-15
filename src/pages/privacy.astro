@@ -254,7 +254,8 @@ const updated = "2026-10-15";
         <li>
           <strong>Abuse limits:</strong> to rate-limit the forwarding endpoint
           we store a keyed hash of your IP address combined with the current
-          minute, never the address itself, and delete it within a few minutes.
+          minute, never the address itself. It expires after two minutes and is
+          deleted the next time the endpoint is used.
         </li>
         <li>
           <strong>How long:</strong> reports are deleted from GlitchTip after 30

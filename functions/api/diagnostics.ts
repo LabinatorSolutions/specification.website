@@ -9,6 +9,7 @@
  * Guards, in order: kill switch → POST only → exact Origin → per-IP rate limit
  * → 64 KB body cap → envelope validation (our DSN, one event or transaction) →
  * upstream backoff → site-wide daily cap → forward (3 s, no redirects).
+ * Expired rate-limit rows are purged on every counted request.
  *
  * Rate-limit state lives in D1 (strongly consistent, unlike KV). Per-IP rows are
  * keyed by an HMAC of the IP with DIAGNOSTICS_HASH_SECRET and the current
@@ -152,6 +153,21 @@ export const onRequest: PagesFunction<Env> = async ({
     return reply(503);
   }
 
+  // Purge expired rows on every counted request, so per-IP hashes never
+  // outlive their two-minute window by long. Never blocks the response.
+  waitUntil(
+    db
+      .batch([
+        db
+          .prepare(`DELETE FROM diagnostics_rate WHERE expires_at < ?1`)
+          .bind(now),
+        db
+          .prepare(`DELETE FROM diagnostics_backoff WHERE until < ?1`)
+          .bind(now),
+      ])
+      .catch(() => {}),
+  );
+
   const bytes = await readCapped(request);
   if (!bytes) return reply(413);
   const envelope = validateEnvelope(bytes);
@@ -176,22 +192,6 @@ export const onRequest: PagesFunction<Env> = async ({
     if (count > SITE_PER_DAY) return backoff(429, dayEnd - now);
   } catch {
     return reply(503);
-  }
-
-  // Opportunistic cleanup of expired rows; never blocks the response.
-  if (Math.random() < 0.05) {
-    waitUntil(
-      db
-        .batch([
-          db
-            .prepare(`DELETE FROM diagnostics_rate WHERE expires_at < ?1`)
-            .bind(now),
-          db
-            .prepare(`DELETE FROM diagnostics_backoff WHERE until < ?1`)
-            .bind(now),
-        ])
-        .catch(() => {}),
-    );
   }
 
   // Fresh request: none of the browser's headers (cookies, auth, UA, IP) go on.

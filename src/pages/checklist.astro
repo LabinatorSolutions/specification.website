@@ -21,7 +21,7 @@ for (const k of Object.keys(grouped)) {
   description="The Website Specification as a flat checklist — required, recommended, optional. Print-friendly."
   ogImage="/og/checklist.png"
 >
-  <div class="mx-auto max-w-4xl px-4 py-10">
+  <div class="field-page checklist-page mx-auto max-w-4xl px-4 py-10">
     <Breadcrumbs
       crumbs={[{ label: "Home", href: "/" }, { label: "Checklist" }]}
     />
@@ -45,12 +45,17 @@ for (const k of Object.keys(grouped)) {
       </p>
     </header>
 
+    <nav class="checklist-jumps no-print" aria-label="Checklist categories">
+      {categories.map((c) => (
+        <a href={`#${c.slug}`}>{c.title}</a>
+      ))}
+    </nav>
     <div class="mt-8 space-y-10">
       {categories.map((c) => {
         const items = grouped[c.slug] ?? [];
         if (!items.length) return null;
         return (
-          <section>
+          <section id={c.slug}>
             <h2 class="text-xl font-bold text-ink-900">{c.title}</h2>
             <p class="text-sm text-ink-600">{c.summary}</p>
             <ul class="mt-3 divide-y divide-ink-100 rounded-lg border border-ink-200 bg-ink-50">
@@ -61,7 +66,7 @@ for (const k of Object.keys(grouped)) {
                     class="mt-1.5 h-4 w-4 rounded border-ink-300 text-accent-700 focus:ring-accent-500"
                     aria-label={`Mark ${entry.data.title} done`}
                   />
-                  <div class="flex-1">
+                  <div class="min-w-0 flex-1">
                     <div class="flex flex-wrap items-baseline gap-2">
                       <a
                         class="text-sm font-medium text-ink-900 hover:text-accent-700"

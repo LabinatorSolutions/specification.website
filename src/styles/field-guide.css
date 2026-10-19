@@ -1,0 +1,425 @@
+@font-face {
+  font-family: "Field Archivo";
+  src: url("/fonts/archivo-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Field Archivo";
+  src: url("/fonts/archivo-extrabold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  --field-font: "Field Archivo", var(--font-sans);
+  --field-mono: var(--font-mono);
+  --field-paper: light-dark(oklch(97% 0.012 145), oklch(17% 0.018 145));
+  --field-ink: light-dark(oklch(23% 0.035 150), oklch(95% 0.015 145));
+  --field-muted: light-dark(oklch(43% 0.025 150), oklch(75% 0.025 145));
+  --field-rule: light-dark(oklch(80% 0.025 145), oklch(35% 0.025 145));
+  --field-soft: light-dark(oklch(93% 0.025 145), oklch(23% 0.025 145));
+  --field-green: light-dark(oklch(44% 0.135 150), oklch(81% 0.16 145));
+  --field-signal: oklch(85% 0.19 135);
+  --field-forest: oklch(24% 0.045 155);
+  --field-map-ink: oklch(96% 0.015 145);
+  --field-map-muted: oklch(78% 0.035 145);
+  --field-map-rule: oklch(44% 0.045 155);
+  --field-space-xs: 0.5rem;
+  --field-space-sm: 0.75rem;
+  --field-space-md: 1rem;
+  --field-space-lg: 1.5rem;
+  --field-space-xl: 2.5rem;
+  --field-space-2xl: 4rem;
+  --field-space-3xl: 6rem;
+}
+
+/* Shared field-guide identity. Page-specific layouts keep their own reading order. */
+:root {
+  --link-color: var(--field-green);
+  --link-hover-color: light-dark(oklch(33% 0.1 150), oklch(89% 0.13 145));
+}
+body {
+  background: var(--field-paper);
+  color: var(--field-ink);
+}
+::selection {
+  background: var(--field-green);
+  color: var(--field-paper);
+}
+:focus-visible {
+  outline: 3px solid var(--field-green);
+  outline-offset: 4px;
+}
+a {
+  text-underline-offset: 0.2em;
+}
+:where(h1, h2, h3, h4) {
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+:where([id]) {
+  scroll-margin-top: 10rem;
+}
+.site-header {
+  background: var(--field-paper);
+  border-bottom: 2px solid var(--field-ink);
+  backdrop-filter: none;
+}
+.site-header > div:first-child {
+  max-width: 80rem;
+  min-height: 88px;
+  padding-inline: 1.5rem;
+}
+.site-header > div:first-child > a {
+  font-weight: 800;
+}
+.site-header a > svg {
+  background: var(--color-accent-800);
+  border-radius: 0;
+}
+.site-header a > span > span:first-child {
+  font-size: 1.25rem;
+  letter-spacing: -0.04em;
+}
+.site-header a > span > span:last-child {
+  display: none;
+}
+.site-header > div:last-child {
+  background: var(--field-paper);
+  border-color: var(--field-rule);
+}
+.site-header nav[aria-label="Categories"] {
+  max-width: 80rem;
+  padding-inline: 1.5rem;
+}
+.site-header [data-search-trigger],
+.site-header summary {
+  border-radius: 0;
+}
+.site-header nav[aria-label="Primary"] [data-search-trigger] {
+  min-height: 36px;
+}
+.mobile-menu__panel {
+  border-radius: 0;
+}
+.field-page {
+  max-width: 60rem;
+  padding: 3rem 1.5rem 4rem;
+}
+.field-page > header {
+  margin-top: 2rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 2px solid var(--field-ink);
+}
+.field-page h1 {
+  color: var(--field-ink);
+  font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.5rem;
+}
+.field-page > header > p:first-of-type {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  max-width: 65ch;
+}
+.field-page h2,
+.field-page h3 {
+  font-weight: 800;
+}
+.field-page h2 {
+  letter-spacing: -0.03em;
+}
+.field-page > .prose-spec {
+  max-width: 72ch;
+}
+.field-page > .prose-spec > h1 {
+  padding-bottom: 2rem;
+  border-bottom: 2px solid var(--field-ink);
+}
+.prose-spec h2 {
+  font-size: 1.75rem;
+}
+.prose-spec h3 {
+  font-size: 1.25rem;
+}
+.prose-spec pre {
+  border-radius: 0;
+  padding: 1.5rem;
+}
+.prose-spec a {
+  overflow-wrap: anywhere;
+}
+.article-page {
+  max-width: 80rem;
+}
+.article-page > header {
+  max-width: 72rem;
+}
+.article-page > div.grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+.article-page .prose-spec {
+  font-size: 1.0625rem;
+}
+.article-page aside > div,
+.article-page .not-prose {
+  border-radius: 0;
+  padding: 1.5rem;
+  background: var(--field-soft);
+}
+.article-page aside {
+  top: 10rem;
+}
+.article-page aside #toc a {
+  display: block;
+  padding-block: 0.25rem;
+}
+.catalog-page {
+  max-width: 80rem;
+}
+.catalog-page ul.grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 2.5rem;
+}
+.catalog-page section {
+  scroll-margin-top: 10rem;
+}
+.catalog-page section h2 {
+  font-size: 2rem;
+}
+.spec-card {
+  height: 100%;
+  padding: 1.5rem;
+  border: 0;
+  border-top: 1px solid var(--field-rule);
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+.spec-card:hover {
+  background: var(--field-soft);
+  border-color: var(--field-green);
+  box-shadow: none;
+}
+.spec-card > div {
+  flex-wrap: wrap;
+}
+.spec-card h3 {
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+.spec-card p {
+  margin-top: 0.75rem;
+  line-height: 1.6;
+}
+.checklist-page {
+  max-width: 68rem;
+}
+.checklist-jumps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--field-rule);
+}
+.checklist-jumps a {
+  padding-block: 0.5rem;
+  color: var(--field-green);
+  font-size: 0.875rem;
+}
+.checklist-jumps a:hover {
+  text-decoration: underline;
+}
+.checklist-page section {
+  scroll-margin-top: 10rem;
+}
+.checklist-page section h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+.checklist-page section > p {
+  margin-block: 0.75rem 1.5rem;
+}
+.checklist-page section > ul {
+  border: 0;
+  border-top: 2px solid var(--field-ink);
+  border-radius: 0;
+  background: transparent;
+}
+.checklist-page section > ul > li {
+  padding: 1.5rem;
+  gap: 1.25rem;
+  border-bottom: 1px solid var(--field-rule);
+}
+.checklist-page section > ul > li:hover,
+.checklist-page section > ul > li:has(input:checked) {
+  background: var(--field-soft);
+}
+.checklist-page input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  accent-color: var(--field-green);
+  cursor: pointer;
+}
+.checklist-page section li a {
+  font-size: 1.0625rem;
+  font-weight: 800;
+}
+.checklist-page section li p {
+  margin-top: 0.5rem;
+  line-height: 1.6;
+}
+.history-page > div > section > h2 {
+  font-size: 1.5rem;
+  color: var(--field-green);
+  text-transform: none;
+  letter-spacing: -0.025em;
+}
+.history-page ol {
+  border-color: var(--field-rule);
+}
+.history-page li h3 {
+  font-size: 1.375rem;
+}
+.history-page li {
+  scroll-margin-top: 10rem;
+}
+.sibling-banner {
+  margin-top: 4rem;
+  background: var(--color-sibling-50);
+  border-color: var(--color-sibling-200);
+}
+.sibling-banner > div,
+.site-footer > div {
+  max-width: 80rem;
+  padding-inline: 1.5rem;
+  padding-block: 3rem;
+}
+.sibling-banner h2 {
+  font-size: 2rem;
+  font-weight: 800;
+}
+.sibling-banner a {
+  border-radius: 0;
+  padding: 1rem 1.5rem;
+}
+.site-footer {
+  color-scheme: dark;
+  background: var(--field-forest);
+  color: var(--field-map-ink);
+}
+.site-footer a {
+  padding-block: 0.25rem;
+}
+.site-footer a:hover {
+  color: var(--field-signal);
+}
+.site-footer .grid > div:first-child > p:first-child {
+  font-size: 1.375rem;
+  font-weight: 800;
+}
+html[lang] {
+  --pf-border-radius: 0;
+}
+@media (min-width: 40rem) {
+  .field-page {
+    padding-inline: 2.5rem;
+    padding-top: 3.5rem;
+  }
+  .catalog-page ul.grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .site-header > div:first-child,
+  .site-header nav[aria-label="Categories"],
+  .sibling-banner > div,
+  .site-footer > div {
+    padding-inline: 2.5rem;
+  }
+}
+@media (min-width: 64rem) {
+  .article-page > div.grid {
+    grid-template-columns: minmax(0, 1fr) 15rem;
+    gap: 4rem;
+  }
+}
+@media (max-width: 39.99rem) {
+  .site-header > div:first-child {
+    gap: 0.5rem;
+    padding-inline: 1rem;
+  }
+  .site-header > div:first-child > a {
+    gap: 0.5rem;
+  }
+  .site-header > div:first-child > a > svg {
+    width: 2rem;
+    height: 2rem;
+  }
+  .site-header a > span > span:first-child {
+    font-size: 0.9375rem;
+    white-space: nowrap;
+  }
+  .site-header > div:first-child > div {
+    gap: 0.5rem;
+  }
+  .field-page {
+    padding-inline: 1.5rem;
+  }
+  .field-page h1 {
+    font-size: 2.75rem;
+  }
+  .checklist-page section > ul > li {
+    padding: 1.25rem 1rem;
+    gap: 0.75rem;
+  }
+  .checklist-page section li a {
+    overflow-wrap: anywhere;
+  }
+  .spec-card {
+    padding-inline: 1rem;
+  }
+}
+@media print {
+  .field-page {
+    max-width: none;
+    padding: 0;
+  }
+  .field-page > header {
+    display: block;
+  }
+  .field-page h1 {
+    font-size: 24pt;
+  }
+  .checklist-page section h2 {
+    font-size: 16pt;
+  }
+  .checklist-page section > ul > li {
+    padding: 0.5rem;
+    break-inside: avoid;
+  }
+  .checklist-page {
+    color-scheme: light;
+  }
+  .article-page aside {
+    display: none;
+  }
+}
+
+/* The checklist has its own in-page category navigation. */
+body:has(.checklist-page) .site-header > div:last-child {
+  display: none;
+}
+.prose-spec :is(h2, h3) {
+  scroll-margin-top: 10rem;
+}
+.error-page > div > a {
+  border-radius: 0;
+  padding: 1rem 1.5rem;
+}

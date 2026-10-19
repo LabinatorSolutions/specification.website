@@ -2,24 +2,24 @@
 
 @theme {
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+    "Field Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
 
   /* Ink scale resolves via light-dark() so it follows the used color-scheme.
      `50` is always the page surface, `900` the strongest text — semantic in
      both schemes. Toggling [data-theme] on <html> flips color-scheme below,
      which flips every utility that references one of these tokens. */
-  --color-ink-50: light-dark(#f7f7f8, #0e0e13);
-  --color-ink-100: light-dark(#eeeef1, #1a1a20);
-  --color-ink-200: light-dark(#d8d8df, #2a2a31);
-  --color-ink-300: light-dark(#b4b4be, #3f3f48);
-  --color-ink-400: light-dark(#87878f, #5b5b66);
-  --color-ink-500: light-dark(#5b5b66, #87878f);
-  --color-ink-600: light-dark(#3f3f48, #b4b4be);
-  --color-ink-700: light-dark(#2a2a31, #d8d8df);
-  --color-ink-800: light-dark(#1a1a20, #eeeef1);
-  --color-ink-900: light-dark(#0e0e13, #f7f7f8);
+  --color-ink-50: light-dark(oklch(97% 0.012 145), oklch(17% 0.018 145));
+  --color-ink-100: light-dark(oklch(93% 0.025 145), oklch(23% 0.025 145));
+  --color-ink-200: light-dark(oklch(80% 0.025 145), oklch(35% 0.025 145));
+  --color-ink-300: light-dark(oklch(70% 0.025 145), oklch(44% 0.025 145));
+  --color-ink-400: light-dark(oklch(58% 0.025 145), oklch(56% 0.025 145));
+  --color-ink-500: light-dark(oklch(46% 0.025 150), oklch(70% 0.025 145));
+  --color-ink-600: light-dark(oklch(43% 0.025 150), oklch(75% 0.025 145));
+  --color-ink-700: light-dark(oklch(35% 0.03 150), oklch(84% 0.02 145));
+  --color-ink-800: light-dark(oklch(27% 0.035 150), oklch(91% 0.015 145));
+  --color-ink-900: light-dark(oklch(23% 0.035 150), oklch(95% 0.015 145));
 
   /* Accent scale is fixed across modes — the same brand green hex values.
      Per-utility contrast for text-on-dark is handled via light-dark() in

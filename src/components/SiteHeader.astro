@@ -4,7 +4,7 @@ import ThemeToggle from "./ThemeToggle.astro";
 const { pathname } = Astro.url;
 ---
 
-<header class="sticky top-0 z-40 border-b border-ink-200 bg-ink-50/95 backdrop-blur supports-[backdrop-filter]:bg-ink-50/80">
+<header class="site-header sticky top-0 z-40 border-b border-ink-200 bg-ink-50/95 backdrop-blur supports-[backdrop-filter]:bg-ink-50/80">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
     <a
       href="/"
@@ -35,7 +35,7 @@ const { pathname } = Astro.url;
     </a>
 
     {/* Desktop primary nav (≥ md) */}
-    <nav aria-label="Primary" class="hidden md:block">
+    <nav aria-label="Primary" class="hidden lg:block">
       <ul class="flex items-center gap-5 text-sm">
         <li>
           <a class="text-ink-700 hover:text-accent-700" href="/spec/">
@@ -45,6 +45,11 @@ const { pathname } = Astro.url;
         <li>
           <a class="text-ink-700 hover:text-accent-700" href="/checklist/">
             Checklist
+          </a>
+        </li>
+        <li>
+          <a class="text-ink-700 hover:text-accent-700" href="/changelog/">
+            Changelog
           </a>
         </li>
         <li>
@@ -99,7 +104,7 @@ const { pathname } = Astro.url;
 
     {/* Mobile controls (< md) — theme toggle next to the hamburger. <details>
         gives the menu a no-JS, no-CSP fallback. */}
-    <div class="flex items-center gap-4 md:hidden">
+    <div class="flex items-center gap-4 lg:hidden">
       <ThemeToggle />
       <button
         type="button"
